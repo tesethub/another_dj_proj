@@ -10,7 +10,7 @@ class CommonArticle(models.Model):
     active=models.BooleanField(verbose_name='Видимость', default=True)
     likes=models.SmallIntegerField(verbose_name='Кол-во лайков', default=0)
     views=models.SmallIntegerField(verbose_name='Кол-во просмотров', default=0)
-    author=models.ForeignKey('SiteUser')
+    author=models.ForeignKey(SiteUser)
     class Meta:
         abstract=True
 
@@ -38,8 +38,10 @@ class Categories(models.Model):
     title=models.CharField(verbose_name='Название категории', max_length=50, unique=True)
 
 class Registration (models.Model):
+    "Возможность регистрации на события как через УЗ сайта так и через ссылку по имейл"
+    #TODO возможно лучше вынести в отдельное приложение
     subject=models.ForeignKey('Event')
-    site_user=models.ForeignKey('SiteUser', blank=True)
+    site_user=models.ForeignKey(SiteUser, blank=True)
     name=models.CharField(verbose_name='Имя для регистации через имейл', max_length=100, blank=True)
     email=models.EmailField(verbose_name='Адрес для регистации через имейл', blank=True)
     link=models.URLField(verbose_name='Ссылка для регистрации', blank=True)
