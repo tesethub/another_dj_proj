@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+ {{error}}
+	<form action="/login/" method="POST">
+        {% csrf_token %}
+		<input type="text" placeholder="Имя пользователя" name="login" value="{{login}}">
+		<input type="password" placeholder="Пароль" name="password">
+        <input type="hidden"  name="redirect" value="{{redirect}}">
+		<input type="submit" value="Войти">
+	</form>
+</body>
+</html>

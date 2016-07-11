@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	{% if request.user.username == '' %}
+		<form action="/login/" method="POST">
+        {% csrf_token %}
+
+		<input type="text" placeholder="Имя пользователя" name="login">
+		<input type="password" placeholder="Пароль" name="password">
+        <input type="hidden" name="redirect" value="{{request.path}}">
+		<input type="submit" value="Войти">
+	</form>
+
+	{% else %}
+	{{request.user.username}}
+	<form action="/logout/" method="POST">
+		{% csrf_token %}
+		<input type='submit' value="Выйти">
+        <input type="hidden" name="redirect" value="{{request.path}}">
+	</form>
+    {%endif %}
+    {%block content %}{%endblock %}
+</body>
+</html>
