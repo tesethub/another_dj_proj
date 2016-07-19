@@ -1,0 +1,34 @@
+﻿
+
+{%for instance in content %}
+    <h2>{{instance.name}}</h2>
+    <table>
+    {%for row in instance.our_queryset %}
+        <tr>
+            <td>{{row}} </td>
+            <td> 
+                <form action='/cadmin/del/' method='POST'>
+                    {%csrf_token %}
+                    <input type='hidden' name='model' value='{{instance.name}}'>
+                    <input type='hidden' name='id' value='{{row.id}}'>
+                    <input type='submit'  value='Удалить'>
+                
+                </form>
+            </td>
+             <td> 
+                <form action='/cadmin/edit/' method='POST'>
+                    {%csrf_token %}
+                    <input type='hidden' name='model' value='{{instance.name}}'>
+                    <input type='hidden' name='id' value='{{row.id}}'>
+                    <input type='submit'  value='Редактировать'>
+                
+                </form>
+            </td>
+        </tr>
+    {%empty %}
+        <tr><td>Таблица пустая</td><td></td></tr>
+    {%endfor %}
+</table>
+{%endfor %}
+
+

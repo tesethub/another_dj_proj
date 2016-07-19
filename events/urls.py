@@ -16,12 +16,24 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from mainApp.views import *
-from logInOut.views import *
+
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index),
-    url(r'^page2/$', page2),
-    url(r'^login/$', login),
-    url(r'^logout/$', logout),
+    url(r'^current/$', events_current),
+    url(r'^coming/$', events_coming),
+    url(r'^recent/$', events_recent),
+    url(r'^archiv/$', events_archiv),
+    url(r'^event/([0-9]+)$', show_event),
+    url(r'^events/bycat/([0-9]+)$', index),
+    url(r'^places/$', places),
+    url(r'^place/([0-9]+)$', show_place),
+    url(r'^places/bycat/([0-9]+)$', places),
+    url(r'^articles/$', articles),
+    url(r'^article/([0-9]+)$', show_article),
+    url(r'^log/', include('logInOut.urls')),
+    url(r'^register/', include('register.urls')),
+    url(r'^cadmin/', include('customAdmin.urls')),
 ]

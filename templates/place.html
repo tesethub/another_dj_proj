@@ -1,0 +1,38 @@
+﻿{%extends 'base.html' %}
+{%block menu2 %}
+    selected
+{%endblock %}
+{%block right %}
+    <div id="sidebar_container">
+        <div class="sidebar">
+            <h3>Категории</h3>
+            <ul>
+            {%for category in categories %}
+               <li><a href="/places/bycat/{{category.id}}">{{category.title}}</a></li>
+            {%empty%}
+            {%endfor %}
+            </ul>
+        </div>
+    </div>
+
+{%endblock %}
+{%block content %}
+
+    <div class="instance">
+        <h3>{{smth.title}}</h3>
+        <h4>
+            Категория:
+            {%for category in  place.category.all %}
+                <a href="/placess/bycat/{{category.id}}">{{category.title}}</a>
+            {%endfor %}
+        </h4>
+
+        <p>
+
+            {{smth.content}}
+
+        </p>
+
+    </div>
+
+{%endblock %}

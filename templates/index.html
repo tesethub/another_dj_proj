@@ -1,8 +1,44 @@
 ﻿{%extends 'base.html' %}
+{%block menu1 %}
+    selected
+{%endblock %}
+{%block right %}
+    <div id="sidebar_container">
+        <div class="sidebar">
+            <h3>Категории</h3>
+            <ul>
+            {%for category in categories %}
+               <li><a href="/events/bycat/{{category.id}}">{{category.title}}</a></li>
+            {%empty%}
+            {%endfor %}
+            </ul>
+        </div>
+    </div>
+
+{%endblock %}
 {%block content %}
 
-здесь будет проект<br>
+{%for instance in content %}
+    <h2>{{instance.name}}</h2>
+        {%for event in instance.data %}
+             <div class="instance">
+                <h3>{{event.title}}</h3>
+                Категория:
+                {%for category in  event.category.all %}
+                    <a href="/events/bycat/{{category.id}}">{{category.title}}</a>
+                {%endfor %}
+                 <p>
+                    <a href="/event/{{event.id}}">
+                        {{event.content|truncatewords_html:12}}
+                    </a>
+                </p>
+                <hr>
 
-<a href="/page2/">Другая страница</a>
+             </div>
+        {% empty %}
+            Нет событий
+        {% endfor %}
+{%endfor %}
+
 
 {%endblock %}

@@ -1,0 +1,25 @@
+﻿{%extends 'base.html' %}
+{%block menu3 %}
+    selected
+{%endblock %}
+{%block content %}
+{%for article in articles %}
+    <div class="instance">
+        <h3>{{article.title}}</h3>
+        <h4> Тема: <a href="/event/{{article.subject.id}}">{{article.subject.title}}</a></h4>
+        <p>
+            <a href="/article/{{article.id}}">
+            {{article.content|truncatewords_html:12}}
+            </a>
+        </p>
+        <hr>
+
+    </div>
+
+{%empty %}
+    <h3>Статей нет</h3>
+{%endfor %}
+
+
+
+{%endblock %}

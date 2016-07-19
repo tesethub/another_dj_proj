@@ -17,29 +17,37 @@ class CommonArticle(models.Model):
 
 
 class Article (CommonArticle):
-    subject=models.ForeignKey('Event', blank=True)
+    subject=models.ForeignKey('Event', null=True, default=None, blank=True)
 
 
 class Event (CommonArticle):
     date_of_start=models.DateField(verbose_name='Дата начала')
-    date_of_finish=models.DateField(verbose_name='Дата завершения', blank=True)
+    date_of_finish=models.DateField(verbose_name='Дата завершения', null=True, default=None, blank=True)
     time_of_start=models.TimeField(verbose_name='Время начала')
-    time_of_finish=models.TimeField(verbose_name='Время завершения', blank=True)
-    place=models.ForeignKey('Place', blank=True)
-    category=models.ManyToManyField('Categories')
+    time_of_finish=models.TimeField(verbose_name='Время завершения',  null=True, default=None, blank=True)
+    place=models.ForeignKey('Place', null=True, default=None, blank=True)
+    category=models.ManyToManyField('CategoriesEvents', default=None, blank=True)
 
 
 class Place(models.Model):
     title=models.CharField(verbose_name='Название', max_length=255)
-    adress=models.TextField(verbose_name='Название', max_length=255)
+    content=models.TextField(verbose_name='Текст')
+    adress=models.TextField(verbose_name='Адрес', max_length=255)
+    category=models.ManyToManyField('CategoriesPlaces',  default=None, blank=True)
 
 
-class Categories(models.Model):
+class CategoriesEvents(models.Model):
     title=models.CharField(verbose_name='Название категории', max_length=50, unique=True)
+
+class CategoriesPlaces(models.Model):
+    title=models.CharField(verbose_name='Название категории', max_length=50, unique=True)
+
+class Images(models.Model):
+    image=models.FileField()
 
 class Registration (models.Model):
     "Возможность регистрации на события как через УЗ сайта так и через ссылку по имейл"
-    #TODO возможно лучше вынести в отдельное приложение
+
     subject=models.ForeignKey('Event')
     site_user=models.ForeignKey(SiteUser, blank=True)
     name=models.CharField(verbose_name='Имя для регистации через имейл', max_length=100, blank=True)

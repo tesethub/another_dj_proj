@@ -1,0 +1,32 @@
+﻿{%extends 'base.html' %}
+{%block menu1 %}
+    selected
+{%endblock %}
+{%block right %}
+    <div id="sidebar_container">
+        <div class="sidebar">
+            <h3>Категории</h3>
+            <ul>
+            {%for category in categories %}
+               <li><a href="/events/bycat/{{category.id}}">{{category.title}}</a></li>
+            {%empty%}
+            {%endfor %}
+            </ul>
+        </div>
+    </div>
+
+{%endblock %}
+{%block content %}
+
+    <div class="instance">
+        <h3>{{smth.title}}</h3>
+        Просмотров: {{smth.views}} Категории: {%for category in  smth.category.all %}{{category.title}}{%endfor %}
+        <p>
+
+            {{smth.content}}
+
+        </p>
+
+    </div>
+
+{%endblock %}
