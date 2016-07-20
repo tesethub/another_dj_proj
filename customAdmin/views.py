@@ -21,7 +21,7 @@ def index (request):
                     output['content'].append({'name':key, 'our_queryset': our_queryset})
                 except:
                     continue
-                #output['content'].append(modelsmodule.__dict__[somemodel].__name__)
+
         return render(request, 'customAdmin.html', output)
     else:
         return render(request, 'authform.html')#TODO доделать перенаправление
@@ -33,10 +33,9 @@ def delitem(request):
         modelname=request.POST.get('model')
         our_object=get_object_or_404(modelsmodule.__dict__[modelname], id=request.POST.get('id'))
         our_object.delete()
-
         return redirect('/cadmin/')
     else:
-        return render(request, 'authform.html')#TODO доделать перенаправление
+        return render(request, 'authform.html')
 
 def show_form(request):
     modelname=request.POST.get('model')
@@ -45,26 +44,29 @@ def show_form(request):
             fields='__all__'
             model=modelsmodule.__dict__[modelname]
 
-    our_object=get_object_or_404(modelsmodule.__dict__[modelname], id=request.POST.get('id'))
-    form=MyForm()
-
-
-    return  render(request, 'show_form.html', {'form':form, 'model':modelname})
-
-
+    if request.POST.get('id'):
+        our_object=get_object_or_404(modelsmodule.__dict__[modelname], id=request.POST.get('id'))
+        form=MyForm(instance=our_object)
+    else:
+        form=MyForm()
+    return  render(request, 'show_form.html', {'form':form, 'model':modelname, 'id':request.POST.get('id')})
 
 def save_form(request):
     modelname=request.POST.get('model')
-
+    id=request.POST.get('id')
     class MyForm(ModelForm):
         class Meta:
             fields='__all__'
             model=modelsmodule.__dict__[modelname]
 
-    form=MyForm(request.POST)
+    if id=='None' or id is None:
+        form=MyForm(request.POST)
+    else:
+        our_object=get_object_or_404(modelsmodule.__dict__[modelname], id=id)
+        form=MyForm(request.POST, instance=our_object)
 
     if form.is_valid():
         form.save()
         return redirect('/cadmin/')
     else:
-        render(request, 'show_form.html', {'form':form, 'model':modelname})
+        return render(request, 'show_form.html', {'form':form, 'model':modelname, 'id':id})
