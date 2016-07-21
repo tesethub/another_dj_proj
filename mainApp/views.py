@@ -6,6 +6,7 @@ from django.db.models import Q
 from mainApp.models import *
 from countViews.views import *
 import datetime
+from django.core.paginator import Paginator
 
 TODAY=datetime.date.today()
 
@@ -75,7 +76,14 @@ def show_place(request, place_id):
 
 def articles(request):
     articles=Article.objects.filter(active=True).order_by('added')
-    return render(request,'articles.html' ,{'articles':articles})
+    paginator=Paginator(articles, 2)
+    page_num=request.GET.get('page')
+    try:
+        articles_list=paginator.page(page_num)
+    except:
+        articles_list=paginator.page(1)
+
+    return render(request,'articles.html' ,{'articles':articles_list})
 
 
 
