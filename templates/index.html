@@ -5,6 +5,9 @@
 {%block right %}
     <div id="sidebar_container">
         <div class="sidebar">
+            <a href="/archiv/">Архив</a>|
+            <a href="/recent/">Недавнее</a>|
+            <a href="/">Актуальные</a>
             <h3>Категории</h3>
             <ul>
             {%for category in categories %}
@@ -19,15 +22,24 @@
 {%block content %}
 
 {%for instance in content %}
+
     <h2>{{instance.name}}</h2>
         {%for event in instance.data %}
              <div class="instance">
+                  <p>{{event.date_of_start|date:"d E l "}}
+            {% if event.date_of_finish %}
+             - до {{event.date_of_finish|date:"d E l "}}
+            {% endif %}
+
+
+        </p>
                 <h3>{{event.title}}</h3>
                 Категория:
                 {%for category in  event.category.all %}
                     <a href="/events/bycat/{{category.id}}">{{category.title}}</a>
                 {%endfor %}
                  <p>
+
                     <a href="/event/{{event.id}}">
                         {{event.content|truncatewords_html:12}}
                     </a>

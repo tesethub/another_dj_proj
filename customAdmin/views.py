@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 import mainApp.models as modelsmodule
 from django.forms import ModelForm
+from django.contrib.auth.decorators import user_passes_test
+
 
 
 # Create your views here.
@@ -11,8 +13,9 @@ def check_post(request):
     else:
         raise Http404
 
+
+@user_passes_test(lambda u : u.is_superuser, login_url='/log/in/')
 def index (request):
-    if request.user.is_authenticated and request.user.is_superuser:
         output={'content':[]}
         for key, value in modelsmodule.__dict__.items():
             if not (key.startswith('__') or key=='models'):
@@ -23,10 +26,10 @@ def index (request):
                     continue
 
         return render(request, 'customAdmin.html', output)
-    else:
-        return render(request, 'authform.html')#TODO доделать перенаправление
 
 
+
+@user_passes_test(lambda u : u.is_superuser, login_url='/log/in/')
 def delitem(request):
     if request.user.is_authenticated and request.user.is_superuser:
         check_post(request)
@@ -37,6 +40,8 @@ def delitem(request):
     else:
         return render(request, 'authform.html')
 
+
+@user_passes_test(lambda u : u.is_superuser, login_url='/log/in/')
 def show_form(request):
     modelname=request.POST.get('model')
     class MyForm(ModelForm):
@@ -49,8 +54,10 @@ def show_form(request):
         form=MyForm(instance=our_object)
     else:
         form=MyForm()
-    return  render(request, 'show_form.html', {'form':form, 'model':modelname, 'id':request.POST.get('id')})
+    return  render(request, 'show_form.html', {'form':form, 'model':modelname, 'id':request.POST.get('id') })
 
+
+@user_passes_test(lambda u : u.is_superuser, login_url='/log/in/')
 def save_form(request):
     modelname=request.POST.get('model')
     id=request.POST.get('id')

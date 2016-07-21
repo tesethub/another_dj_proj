@@ -10,6 +10,7 @@ class CommonArticle(models.Model):
     active=models.BooleanField(verbose_name='Видимость', default=True)
     likes=models.SmallIntegerField(verbose_name='Кол-во лайков', default=0)
     views=models.SmallIntegerField(verbose_name='Кол-во просмотров', default=0)
+    images=models.ManyToManyField('Images', verbose_name='Картинки', default=None, blank=True)
     author=models.ForeignKey(SiteUser)
     class Meta:
         abstract=True
@@ -33,6 +34,8 @@ class Place(models.Model):
     title=models.CharField(verbose_name='Название', max_length=255)
     content=models.TextField(verbose_name='Текст')
     adress=models.TextField(verbose_name='Адрес', max_length=255)
+    site=models.ManyToManyField('Links', default=None, blank=True)
+    email=models.ManyToManyField('Emails', default=None, blank=True)
     category=models.ManyToManyField('CategoriesPlaces',  default=None, blank=True)
 
 
@@ -44,6 +47,12 @@ class CategoriesPlaces(models.Model):
 
 class Images(models.Model):
     image=models.FileField()
+
+class Links(models.Model):
+    link=models.URLField(unique=True)
+
+class Emails(models.Model):
+    email=models.EmailField(unique=True)
 
 class Registration (models.Model):
     "Возможность регистрации на события как через УЗ сайта так и через ссылку по имейл"

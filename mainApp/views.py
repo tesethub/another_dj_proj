@@ -54,7 +54,10 @@ def events_recent(request):
     return render(request,'index.html', output)
 
 def events_archiv(request):
-    #user=auth.get_user(request).username
+    MONTH_AGO=TODAY+datetime.timedelta(days=-30)
+    archiv=Event.objects.filter(
+        date_of_start__lte=MONTH_AGO, active=True).order_by('-date_of_start')
+    output={'content':[{'name':'Архив', 'data':archiv}]}
     return render(request,'index.html', output)
 
 

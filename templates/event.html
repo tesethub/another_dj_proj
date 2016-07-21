@@ -1,4 +1,5 @@
 ﻿{%extends 'base.html' %}
+{%load staticfiles %}
 {%block menu1 %}
     selected
 {%endblock %}
@@ -19,8 +20,45 @@
 {%block content %}
 
     <div class="instance">
+        <p>{{smth.date_of_start|date:"d E l "}}
+            {% if smth.date_of_finish %}
+             - до {{smth.date_of_finish|date:"d E l "}}
+            {% endif %}
+
+
+        </p>
+
         <h3>{{smth.title}}</h3>
-        Просмотров: {{smth.views}} Категории: {%for category in  smth.category.all %}{{category.title}}{%endfor %}
+         Категории:
+        {%for category in  smth.category.all %}
+            <a href="/events/bycat/{{category.id}}">{{category.title}}</a>
+        {%endfor %}
+        <p>
+            Начало: {{smth.time_of_start}}
+            {% if smth.time_of_finish %}
+             Окончание: {{smth.time_of_finish}}
+            {%endif %}
+        </p>
+
+
+            {% if smth.place %}
+             <p>
+             Место: <a href="/place/{{smth.place.id}}">{{smth.place.title}}</a>
+            </p>
+            {%endif %}
+
+             <p>
+            Добавлено: {{smth.added}} Просмотров: {{smth.views}} Понравилось: {{smth.likes}}
+            </p>
+
+
+        <p>
+
+            {%for image in smth.images.all %}
+               <img src="{%static image.image.url%}">
+
+            {% endfor %}
+            </p>
         <p>
 
             {{smth.content}}
