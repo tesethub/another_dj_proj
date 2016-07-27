@@ -5,3 +5,6 @@ from django.db import models
 class Viewed(models.Model):
     ip=models.GenericIPAddressField()
     material=models.CharField(max_length=100)
+
+class Likes(Viewed):
+    pass

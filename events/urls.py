@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from mainApp.views import *
+
 from events import settings
 
 
@@ -36,6 +37,8 @@ urlpatterns = [
     url(r'^article/([0-9]+)$', show_article),
     url(r'^log/', include('logInOut.urls')),
     url(r'^register/', include('register.urls')),
+    url(r'^comment/', include('comments.urls')),
+    url(r'^addlike/', add_like),
     url(r'^cadmin/', include('customAdmin.urls')),
     #отображение медиа-файлов
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),

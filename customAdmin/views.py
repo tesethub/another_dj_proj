@@ -3,6 +3,7 @@ from django.http import Http404
 import mainApp.models as modelsmodule
 from django.forms import ModelForm
 from django.contrib.auth.decorators import user_passes_test
+from customAdmin.forms import form_construct
 
 
 
@@ -14,7 +15,7 @@ def check_post(request):
         raise Http404
 
 
-@user_passes_test(lambda u : u.is_superuser, login_url='/log/in/')
+@user_passes_test(lambda u : u.is_superuser, login_url='/log/admin/')
 def index (request):
         output={'content':[]}
         for key, value in modelsmodule.__dict__.items():
@@ -29,7 +30,7 @@ def index (request):
 
 
 
-@user_passes_test(lambda u : u.is_superuser, login_url='/log/in/')
+@user_passes_test(lambda u : u.is_superuser, login_url='/log/admin/')
 def delitem(request):
     if request.user.is_authenticated and request.user.is_superuser:
         check_post(request)
@@ -41,39 +42,32 @@ def delitem(request):
         return render(request, 'authform.html')
 
 
-@user_passes_test(lambda u : u.is_superuser, login_url='/log/in/')
+@user_passes_test(lambda u : u.is_superuser, login_url='/log/admin/')
 def show_form(request):
     modelname=request.POST.get('model')
-    class MyForm(ModelForm):
-        class Meta:
-            fields='__all__'
-            model=modelsmodule.__dict__[modelname]
 
     if request.POST.get('id'):
         our_object=get_object_or_404(modelsmodule.__dict__[modelname], id=request.POST.get('id'))
-        form=MyForm(instance=our_object)
+        form=form_construct(modelsmodule.__dict__[modelname])(instance=our_object)
     else:
-        form=MyForm()
+        form=form_construct(modelsmodule.__dict__[modelname])
     return  render(request, 'show_form.html', {'form':form, 'model':modelname, 'id':request.POST.get('id') })
 
 
-@user_passes_test(lambda u : u.is_superuser, login_url='/log/in/')
+@user_passes_test(lambda u : u.is_superuser, login_url='/log/admin/')
 def save_form(request):
     modelname=request.POST.get('model')
     id=request.POST.get('id')
-    class MyForm(ModelForm):
-        class Meta:
-            fields='__all__'
-            model=modelsmodule.__dict__[modelname]
 
     if id=='None' or id is None:
-        form=MyForm(request.POST)
+        form=form_construct(modelsmodule.__dict__[modelname])(request.POST)
     else:
         our_object=get_object_or_404(modelsmodule.__dict__[modelname], id=id)
-        form=MyForm(request.POST, instance=our_object)
+        form=form_construct(modelsmodule.__dict__[modelname])(request.POST, instance=our_object)
 
     if form.is_valid():
         form.save()
         return redirect('/cadmin/')
     else:
         return render(request, 'show_form.html', {'form':form, 'model':modelname, 'id':id})
+

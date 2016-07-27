@@ -1,11 +1,15 @@
 ﻿from django.forms import ModelForm
-from django.contrib.auth.models  import User
-
-class SomeForm(ModelForm):
 
 
-    class Meta:
-        model=User
-        fields='__all__'
+def form_construct(Model):
+    class AnotherForm(ModelForm):
+        class Meta:
+            model=Model
+            fields='__all__'
+
+    return AnotherForm
+
+
+
 
 

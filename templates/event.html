@@ -1,5 +1,9 @@
 ﻿{%extends 'base.html' %}
 {%load staticfiles %}
+{%block scriptblock %}
+    <script type="text/javascript" src="{%static 'js/jquery.js'%}"></script>
+    <script type="text/javascript" src="{%static 'js/custom.js'%}"></script>
+{%endblock %}
 {%block menu1 %}
     selected
 {%endblock %}
@@ -48,7 +52,11 @@
             {%endif %}
 
              <p>
-            Добавлено: {{smth.added}} Просмотров: {{smth.views}} Понравилось: {{smth.likes}}
+                 Добавлено: {{smth.added}}
+                 Просмотров: {{smth.views}}
+                 Понравилось: <span class="likes_count">{{smth.likes}}</span>
+                 {% csrf_token %}
+                 <a href="/" data-model="Event" data-id="{{smth.id}}" class="liker">Проголосовать</a>
             </p>
 
 
@@ -64,6 +72,30 @@
             {{smth.content}}
 
         </p>
+        <p>
+            {% for comment in comments %}
+            <div>
+        <p>{{comment.author}} написал {{comment.added}}</p>
+                {{comment.content}}
+
+            </div>
+            {%empty %}
+                Нет комментариев
+            {%endfor %}
+            {% if user.is_authenticated %}
+            <p>Добавить комментарий</p>
+            <form method="post" action="/comment/add/">
+                {% csrf_token %}
+                <textarea name="content">
+
+                </textarea>
+                <input type="hidden" name="subject_type" value="Event">
+                <input type="hidden" name="id" value="{{smth.id}}">
+                <input type="submit" value="Запостить">
+            </form>
+
+            {%endif %}
+
 
     </div>
 

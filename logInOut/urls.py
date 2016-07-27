@@ -5,4 +5,5 @@ from logInOut.views import *
 urlpatterns = [
         url(r'^in/$', login),
         url(r'^out/$', logout),
+        url(r'^admin/$', login_admin),
         ]

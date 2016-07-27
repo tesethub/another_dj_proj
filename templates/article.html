@@ -1,4 +1,9 @@
 ﻿{%extends 'base.html' %}
+{%load staticfiles %}
+{%block scriptblock %}
+    <script type="text/javascript" src="{%static 'js/jquery.js'%}"></script>
+    <script type="text/javascript" src="{%static 'js/custom.js'%}"></script>
+{%endblock %}
 {%block menu3 %}
     selected
 {%endblock %}
@@ -11,6 +16,29 @@
             {{smth.content}}
 
         </p>
+           <p>
+            {% for comment in comments %}
+            <div>
+        <p>{{comment.author}} написал {{comment.added}}</p>
+                {{comment.content}}
+
+            </div>
+            {%empty %}
+                Нет комментариев
+            {%endfor %}
+         {% if user.is_authenticated %}
+            <p>Добавить комментарий</p>
+            <form method="post" action="/comment/add/">
+                {% csrf_token %}
+                <textarea name="content">
+
+                </textarea>
+                <input type="hidden" name="subject_type" value="Article">
+                <input type="hidden" name="id" value="{{smth.id}}">
+                <input type="submit" value="Запостить">
+            </form>
+
+            {%endif %}
 
     </div>
 

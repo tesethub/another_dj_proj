@@ -11,6 +11,7 @@ class CommonArticle(models.Model):
     likes=models.SmallIntegerField(verbose_name='Кол-во лайков', default=0)
     views=models.SmallIntegerField(verbose_name='Кол-во просмотров', default=0)
     images=models.ManyToManyField('Images', verbose_name='Картинки', default=None, blank=True)
+    allow_comments=models.BooleanField(verbose_name='Возможность комментариев', default=True)
     author=models.ForeignKey(SiteUser)
     class Meta:
         abstract=True
@@ -28,6 +29,7 @@ class Event (CommonArticle):
     time_of_finish=models.TimeField(verbose_name='Время завершения',  null=True, default=None, blank=True)
     place=models.ForeignKey('Place', null=True, default=None, blank=True)
     category=models.ManyToManyField('CategoriesEvents', default=None, blank=True)
+    need_registration=models.BooleanField(verbose_name='Возможность зарегистрироваться на событие', default=True)
 
 
 class Place(models.Model):

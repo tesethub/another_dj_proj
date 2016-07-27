@@ -11,6 +11,14 @@
 </head>
 
 <body>
+    <header>
+        {{request.user.username}}
+        <form action="/log/out/" method="POST">
+            {% csrf_token %}
+            <input type='submit' value="Выйти">
+            <input type="hidden" name="redirect" value="{{request.path}}">
+        </form>
+</header>
 
 {%for instance in content %}
     <h2>{{instance.name}}</h2>

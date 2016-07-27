@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'register',
     'customAdmin',
     'signToEvents',
+    'comments',
 ]
 
 MIDDLEWARE_CLASSES = [
