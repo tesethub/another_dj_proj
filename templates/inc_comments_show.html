@@ -1,0 +1,10 @@
+﻿ <h3>Комментарии</h3>
+    {% for comment in comments %}
+         <div>
+            <p>{{comment.author}} написал {{comment.added}}</p>
+                {{comment.content}}
+
+         </div>
+    {%empty %}
+        Нет комментариев
+    {%endfor %}

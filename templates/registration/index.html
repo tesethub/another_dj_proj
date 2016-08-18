@@ -1,0 +1,20 @@
+﻿{%extends './base.html' %}
+{% block content %}
+  {{message}}
+  {% if form %}
+    <form action="/signto/bylink/" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="subject" value="{{form.subject}}">
+        <table>
+        {% for field in form %}
+            <tr>
+                <td>{{field.label_tag}}</td>
+                <td>{{field}}</td>
+                <td>{{field.errors|join:","}}</td>
+            </tr>
+            {%endfor %}
+        </table>
+        <input type="submit" value="Отправить">
+    </form>
+  {%endif %}
+{%endblock %}

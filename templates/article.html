@@ -12,32 +12,32 @@
     <div class="instance">
         <h3>{{smth.title}}</h3>
         <p>
-
-            {{smth.content}}
-
+                 Добавлено: {{smth.added}}
+                 Просмотров: {{smth.views}}
+                 Понравилось: <span class="likes_count">{{smth.likes}}</span>
+                 {% csrf_token %}
+                 <a href="/" data-model="Article" data-id="{{smth.id}}" class="liker">Проголосовать</a>
         </p>
-           <p>
-            {% for comment in comments %}
-            <div>
-        <p>{{comment.author}} написал {{comment.added}}</p>
-                {{comment.content}}
+        <p>
+            {{smth.content}}
+        </p>
+        <hr>
+        <p>
+            {% if smth.allow_comments %}
+                {%include 'inc_comments_show.html' %}
+                {% if user.is_authenticated %}
+                    <p>Добавить комментарий</p>
+                    <form method="post" action="/comment/add/">
+                        {% csrf_token %}
+                        <textarea name="content">
 
-            </div>
-            {%empty %}
-                Нет комментариев
-            {%endfor %}
-         {% if user.is_authenticated %}
-            <p>Добавить комментарий</p>
-            <form method="post" action="/comment/add/">
-                {% csrf_token %}
-                <textarea name="content">
+                        </textarea>
+                        <input type="hidden" name="subject_type" value="Article">
+                        <input type="hidden" name="id" value="{{smth.id}}">
+                        <input type="submit" value="Запостить">
+                    </form>
 
-                </textarea>
-                <input type="hidden" name="subject_type" value="Article">
-                <input type="hidden" name="id" value="{{smth.id}}">
-                <input type="submit" value="Запостить">
-            </form>
-
+                {%endif %}
             {%endif %}
 
     </div>

@@ -22,7 +22,7 @@
         <h3>{{smth.title}}</h3>
         <h4>
             Категория:
-            {%for category in  place.category.all %}
+            {%for category in  smth.category.all %}
                 <a href="/placess/bycat/{{category.id}}">{{category.title}}</a>
             {%endfor %}
         </h4>

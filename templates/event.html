@@ -72,30 +72,24 @@
             {{smth.content}}
 
         </p>
+<a href="/signto/{{smth.id}}">Записаться</a>
         <p>
-            {% for comment in comments %}
-            <div>
-        <p>{{comment.author}} написал {{comment.added}}</p>
-                {{comment.content}}
+            {% if smth.allow_comments %}
+                {%include 'inc_comments_show.html' %}
+                {% if user.is_authenticated %}
+                    <p>Добавить комментарий</p>
+                    <form method="post" action="/comment/add/">
+                        {% csrf_token %}
+                        <textarea name="content">
 
-            </div>
-            {%empty %}
-                Нет комментариев
-            {%endfor %}
-            {% if user.is_authenticated %}
-            <p>Добавить комментарий</p>
-            <form method="post" action="/comment/add/">
-                {% csrf_token %}
-                <textarea name="content">
+                        </textarea>
+                        <input type="hidden" name="subject_type" value="Event">
+                        <input type="hidden" name="id" value="{{smth.id}}">
+                        <input type="submit" value="Запостить">
+                    </form>
 
-                </textarea>
-                <input type="hidden" name="subject_type" value="Event">
-                <input type="hidden" name="id" value="{{smth.id}}">
-                <input type="submit" value="Запостить">
-            </form>
-
+                {%endif %}
             {%endif %}
-
 
     </div>
 

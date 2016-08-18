@@ -24,8 +24,6 @@ from events import settings
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index),
-    url(r'^current/$', events_current),
-    url(r'^coming/$', events_coming),
     url(r'^recent/$', events_recent),
     url(r'^archiv/$', events_archiv),
     url(r'^event/([0-9]+)$', show_event),
@@ -39,7 +37,9 @@ urlpatterns = [
     url(r'^register/', include('register.urls')),
     url(r'^comment/', include('comments.urls')),
     url(r'^addlike/', add_like),
-    url(r'^cadmin/', include('customAdmin.urls')),
+
+    url(r'^signto/', include('signToEvents.urls')),
+   # url(r'^cadmin/', include('customAdmin.urls')),
     #отображение медиа-файлов
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 ]

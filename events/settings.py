@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'logInOut',
     'countViews',
     'register',
-    'customAdmin',
+    #'customAdmin',
     'signToEvents',
     'comments',
 ]
